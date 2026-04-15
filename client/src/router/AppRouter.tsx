@@ -4,6 +4,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/user/Dashboard";
 import ProtectedRoute from "../component/ProtectedRoute";
+import Expense from "../pages/user/Expense";
 
 export const AppRouter = () => {
   return (
@@ -18,6 +19,15 @@ export const AppRouter = () => {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/user/expense"
+            element={
+              <ProtectedRoute>
+                <Expense />
               </ProtectedRoute>
             }
           />
