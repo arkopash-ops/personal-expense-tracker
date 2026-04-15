@@ -5,7 +5,7 @@ import { Category } from "../types/category.type.js";
 export interface ExpenseDocument extends Iexpense, Document { }
 
 const expenseSchema = new Schema({
-    userId: { type: Types.ObjectId, required: true },
+    userId: { type: Types.ObjectId, ref: "User", required: true },
     amount: { type: Number, required: true },
     category: {
         type: String,
