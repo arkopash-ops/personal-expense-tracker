@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connectDB = async (): Promise<void> => {
     try {
-        await mongoose.connect("mongodb://localhost:27017/expence-tracker");
+        await mongoose.connect(process.env.MONGO_DB_CONNECTION as string);
         console.log(`MongoDB Connected.`);
     } catch (error) {
         console.error("MongoDB connection error:", error);
