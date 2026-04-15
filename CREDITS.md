@@ -1,0 +1,3 @@
+- npm libraries
+- Bootstrap libraries - https://getbootstrap.com/
+- Protected Route snippet code - https://dev.to/collins87mbathi/reactjs-protected-route-m3j
