@@ -5,7 +5,7 @@ import { Category } from "../types/category.type.js";
 export interface BudgetDocument extends Ibudget, Document { }
 
 const budgetSchema = new Schema({
-    userId: { type: Types.ObjectId, required: true },
+    userId: { type: Types.ObjectId, ref: "user", required: true },
     category: {
         type: String,
         enum: Object.values(Category),
