@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Category } from "./Dashboard";
-
-export interface Expense {
-  _id: string;
-  userId: string;
-  amount: number;
-  category: Category;
-  note?: string;
-  date: string;
-}
+import type { Expense } from "../../types/expense";
+import type { Category } from "../../types/category";
 
 const Expense = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);

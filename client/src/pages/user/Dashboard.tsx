@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-
-export type Category = "food" | "transport" | "bills" | "shopping" | "other";
-
-export interface Budget {
-  _id: string;
-  userId: string;
-  category: Category;
-  month: string;
-  limit: number;
-}
+import type { Budget } from "../../types/budget";
+import type { Category } from "../../types/category";
 
 const Dashboard = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
@@ -156,7 +148,7 @@ const Dashboard = () => {
           </div>
         </form>
       </div>
-      
+
       {/* budget list */}
       <div className="mb-5">
         <h5>Budgets</h5>

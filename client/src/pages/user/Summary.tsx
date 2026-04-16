@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-
-type SummaryItem = {
-  category: string;
-  budget: number;
-  spend: number;
-  remaining: number;
-};
+import type { SummaryItem } from "../../types/summary";
+import SummaryChart from "../../component/SummaryChart";
 
 const Summary = () => {
   const [data, setData] = useState<SummaryItem[]>([]);
+  const [showChart, setShowChart] = useState(false);
 
   const month = "2026-04";
 
@@ -59,6 +55,17 @@ const Summary = () => {
           </div>
         </div>
       </div>
+
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <button
+          className="btn btn-outline-primary btn-sm"
+          onClick={() => setShowChart((prev) => !prev)}
+        >
+          {showChart ? "Hide Chart" : "View Chart"}
+        </button>
+      </div>
+
+      {showChart && <SummaryChart data={data} />}
 
       <h5 className="mb-3">Summary</h5>
 
