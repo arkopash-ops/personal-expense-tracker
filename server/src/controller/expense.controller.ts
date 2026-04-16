@@ -4,7 +4,8 @@ import * as expenseService from "../services/expense.services.js";
 // get all expenses
 export const _getAllExpenses = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const expenses = await expenseService.getAllExpenses();
+        const userId = req.user?.id;
+        const expenses = await expenseService.getAllExpenses(userId);
         res.status(200).json({
             success: true,
             data: expenses,
@@ -20,7 +21,7 @@ export const _createExpense = async (req: Request, res: Response, next: NextFunc
     try {
         const userId = req.user?.id;
 
-        const data = { ...req.body, user: userId };
+        const data = { ...req.body, userId };
 
         const expense = await expenseService.createExpense(data);
         res.status(201).json({

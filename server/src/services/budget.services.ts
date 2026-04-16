@@ -3,8 +3,8 @@ import Budget from "../model/budget.model.js";
 import type { Ibudget } from "../types/budget.types.js";
 
 // get all budget
-export const getAllBudget = async () => {
-    const budgetList = await Budget.find();
+export const getAllBudget = async (userId: string) => {
+    const budgetList = await Budget.find({ userId });
     return budgetList;
 };
 

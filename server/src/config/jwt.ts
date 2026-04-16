@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "JWT_SECRET";
+const JWT_SECRET =  "hello123";
+
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+}
 
 export const generateToken = (id: string) => {
     return jwt.sign(

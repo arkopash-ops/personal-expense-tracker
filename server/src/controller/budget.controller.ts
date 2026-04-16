@@ -4,7 +4,8 @@ import * as budgetService from "../services/budget.services.js"
 // get all budget
 export const _getAllBudget = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const budget = await budgetService.getAllBudget();
+        const userId = req.user?.id;
+        const budget = await budgetService.getAllBudget(userId);
         res.status(200).json({
             success: true,
             data: budget,
@@ -20,7 +21,7 @@ export const _createBudget = async (req: Request, res: Response, next: NextFunct
     try {
         const userId = req.user?.id;
 
-        const data = { ...req.body, user: userId };
+        const data = { ...req.body, userId };
 
         const budget = await budgetService.createBudget(data);
         res.status(201).json({

@@ -2,8 +2,8 @@ import Expense, { type ExpenseDocument } from "../model/expense.model.js";
 import type { Iexpense } from "../types/expense.types.js";
 
 // get all expense
-export const getAllExpenses = async () => {
-    const expenseList = await Expense.find();
+export const getAllExpenses = async (userId: string) => {
+    const expenseList = await Expense.find({userId});
     return expenseList;
 };
 
