@@ -8,6 +8,10 @@ npm create vite@latest frontend
 npm install bootstrap@5.3.8
 npm i bootstrap-icons
 ```
+- Download Rechart for Chart
+```cmd
+npm install recharts
+```
 
 2. Backend Setup
 ```cmd
