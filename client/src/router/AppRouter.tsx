@@ -5,6 +5,7 @@ import Register from "../pages/auth/Register";
 import Dashboard from "../pages/user/Dashboard";
 import ProtectedRoute from "../component/ProtectedRoute";
 import Expense from "../pages/user/Expense";
+import Summary from "../pages/user/Summary";
 
 export const AppRouter = () => {
   return (
@@ -28,6 +29,15 @@ export const AppRouter = () => {
             element={
               <ProtectedRoute>
                 <Expense />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/user/summary"
+            element={
+              <ProtectedRoute>
+                <Summary />
               </ProtectedRoute>
             }
           />

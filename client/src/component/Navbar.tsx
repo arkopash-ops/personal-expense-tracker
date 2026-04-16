@@ -82,6 +82,14 @@ const Navbar: React.FC = () => {
                 </li>
               </ul>
 
+              <ul className="navbar-nav me-auto">
+                <li className="nav-item">
+                  <a className="nav-link active" href="/user/summary">
+                    Summary
+                  </a>
+                </li>
+              </ul>
+
               <div className="d-flex">
                 <button
                   className="btn btn-outline-light"

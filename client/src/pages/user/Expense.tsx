@@ -15,7 +15,6 @@ const Expense = () => {
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
   const defaultExpenseForm = {
-    userId: "",
     amount: 0,
     category: "food" as Category,
     note: "",
@@ -61,7 +60,6 @@ const Expense = () => {
   const editExpense = (e: Expense) => {
     setEditingExpense(e);
     setExpenseForm({
-      userId: e.userId,
       amount: e.amount,
       category: e.category,
       note: e.note || "",
@@ -91,17 +89,6 @@ const Expense = () => {
         <h5>{editingExpense ? "Edit Expense" : "Add Expense"}</h5>
 
         <form onSubmit={handleExpenseSubmit} className="row g-2">
-          <div className="col-md-3">
-            <input
-              className="form-control"
-              placeholder="UserId"
-              value={expenseForm.userId}
-              onChange={(e) =>
-                setExpenseForm({ ...expenseForm, userId: e.target.value })
-              }
-            />
-          </div>
-
           <div className="col-md-2">
             <input
               type="number"
@@ -180,32 +167,44 @@ const Expense = () => {
       <div>
         <h5>Expenses</h5>
 
-        {expenses.map((e) => (
-          <div
-            key={e._id}
-            className="card p-2 mb-2 d-flex justify-content-between flex-row"
-          >
-            <div>
-              {e.date} | ₹{e.amount} | {e.category} | {e.note}
-            </div>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Category</th>
+              <th scope="col">Note</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {expenses.map((e) => (
+              <tr>
+                <td>{e.date}</td>
+                <td>{e.amount}</td>
+                <td>{e.category}</td>
+                <td>{e.note}</td>
+                <td>
+                  <div>
+                    <button
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => editExpense(e)}
+                    >
+                      Edit
+                    </button>
 
-            <div>
-              <button
-                className="btn btn-sm btn-warning me-2"
-                onClick={() => editExpense(e)}
-              >
-                Edit
-              </button>
-
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={() => deleteExpense(e._id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+                    <button
+                      className="btn btn-sm btn-danger me-2"
+                      onClick={() => deleteExpense(e._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

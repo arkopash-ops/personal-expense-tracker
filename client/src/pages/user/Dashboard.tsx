@@ -16,7 +16,6 @@ const Dashboard = () => {
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
 
   const defaultBudgetForm = {
-    userId: "",
     category: "food" as Category,
     month: "",
     limit: 0,
@@ -62,7 +61,6 @@ const Dashboard = () => {
   const editBudget = (b: Budget) => {
     setEditingBudget(b);
     setBudgetForm({
-      userId: b.userId,
       category: b.category,
       month: b.month,
       limit: b.limit,
@@ -91,17 +89,6 @@ const Dashboard = () => {
         <h5>{editingBudget ? "Edit Budget" : "Add Budget"}</h5>
 
         <form onSubmit={handleBudgetSubmit} className="row g-2">
-          <div className="col-md-3">
-            <input
-              className="form-control"
-              placeholder="UserId"
-              value={budgetForm.userId}
-              onChange={(e) =>
-                setBudgetForm({ ...budgetForm, userId: e.target.value })
-              }
-            />
-          </div>
-
           <div className="col-md-3">
             <select
               className="form-control"
@@ -169,32 +156,43 @@ const Dashboard = () => {
       <div className="mb-5">
         <h5>Budgets</h5>
 
-        {budgets.map((b) => (
-          <div
-            key={b._id}
-            className="card p-2 mb-2 d-flex justify-content-between flex-row"
-          >
-            <div>
-              {b.category} | {b.month} | ₹{b.limit}
-            </div>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Month</th>
+              <th scope="col">Budget</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
 
-            <div>
-              <button
-                className="btn btn-sm btn-warning me-2"
-                onClick={() => editBudget(b)}
-              >
-                Edit
-              </button>
+          <tbody>
+            {budgets.map((b) => (
+              <tr>
+                <td>{b.category}</td>
+                <td>{b.month}</td>
+                <td>{b.limit}</td>
+                <td>
+                  <div>
+                    <button
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => editBudget(b)}
+                    >
+                      Edit
+                    </button>
 
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={() => deleteBudget(b._id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+                    <button
+                      className="btn btn-sm btn-danger me-2"
+                      onClick={() => deleteBudget(b._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
