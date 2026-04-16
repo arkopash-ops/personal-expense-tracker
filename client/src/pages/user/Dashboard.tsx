@@ -12,8 +12,9 @@ export interface Budget {
 
 const Dashboard = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
-
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
+
+  const [filterMonth, setFilterMonth] = useState("");
 
   const defaultBudgetForm = {
     category: "food" as Category,
@@ -24,20 +25,24 @@ const Dashboard = () => {
   const [budgetForm, setBudgetForm] = useState(defaultBudgetForm);
 
   const fetchData = async () => {
-    const [b] = await Promise.all([
-      fetch("http://localhost:8080/api/budget", {
-        credentials: "include",
-      }).then((r) => r.json()),
-    ]);
+    const res = await fetch("http://localhost:8080/api/budget", {
+      credentials: "include",
+    });
 
-    setBudgets(b.data || []);
+    const data = await res.json();
+    setBudgets(data.data || []);
   };
 
   useEffect(() => {
     (async () => fetchData())();
   }, []);
 
-  // budget
+  const months = [...new Set(budgets.map((b) => b.month))];
+
+  const filteredBudgets = filterMonth
+    ? budgets.filter((b) => b.month === filterMonth)
+    : budgets;
+
   const handleBudgetSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -100,11 +105,11 @@ const Dashboard = () => {
                 })
               }
             >
-              <option>food</option>
-              <option>transport</option>
-              <option>bills</option>
-              <option>shopping</option>
-              <option>other</option>
+              <option value="food">food</option>
+              <option value="transport">transport</option>
+              <option value="bills">bills</option>
+              <option value="shopping">shopping</option>
+              <option value="other">other</option>
             </select>
           </div>
 
@@ -151,10 +156,26 @@ const Dashboard = () => {
           </div>
         </form>
       </div>
-
+      
       {/* budget list */}
       <div className="mb-5">
         <h5>Budgets</h5>
+
+        {/* Month Filter */}
+        <div className="mb-3">
+          <select
+            className="form-control"
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+          >
+            <option value="">All Months</option>
+            {months.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <table className="table table-hover">
           <thead>
@@ -167,8 +188,8 @@ const Dashboard = () => {
           </thead>
 
           <tbody>
-            {budgets.map((b) => (
-              <tr>
+            {filteredBudgets.map((b) => (
+              <tr key={b._id}>
                 <td>{b.category}</td>
                 <td>{b.month}</td>
                 <td>{b.limit}</td>

@@ -14,6 +14,9 @@ const Expense = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
+  const [filterMonth, setFilterMonth] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+
   const defaultExpenseForm = {
     amount: 0,
     category: "food" as Category,
@@ -24,13 +27,12 @@ const Expense = () => {
   const [expenseForm, setExpenseForm] = useState(defaultExpenseForm);
 
   const fetchData = async () => {
-    const [e] = await Promise.all([
-      fetch("http://localhost:8080/api/expense", {
-        credentials: "include",
-      }).then((r) => r.json()),
-    ]);
+    const res = await fetch("http://localhost:8080/api/expense", {
+      credentials: "include",
+    });
 
-    setExpenses(e.data || []);
+    const data = await res.json();
+    setExpenses(data.data || []);
   };
 
   useEffect(() => {
@@ -72,6 +74,7 @@ const Expense = () => {
       method: "DELETE",
       credentials: "include",
     });
+
     fetchData();
   };
 
@@ -80,9 +83,24 @@ const Expense = () => {
     setExpenseForm(defaultExpenseForm);
   };
 
+  const getMonth = (monthStr: string) => {
+    if (!monthStr) return "";
+    return monthStr.slice(0, 7);
+  };
+
+  const filteredExpenses = expenses.filter((e) => {
+    const matchMonth = filterMonth ? getMonth(e.date) === filterMonth : true;
+    const matchCategory = filterCategory ? e.category === filterCategory : true;
+
+    return matchMonth && matchCategory;
+  });
+
+  // unique months for dropdown
+  const months = [...new Set(expenses.map((e) => getMonth(e.date)))];
+
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Dashboard</h2>
+      <h2 className="mb-4">Expenses</h2>
 
       {/* expense form */}
       <div className="card p-3 mb-4">
@@ -115,11 +133,11 @@ const Expense = () => {
                 })
               }
             >
-              <option>food</option>
-              <option>transport</option>
-              <option>bills</option>
-              <option>shopping</option>
-              <option>other</option>
+              <option value="food">food</option>
+              <option value="transport">transport</option>
+              <option value="bills">bills</option>
+              <option value="shopping">shopping</option>
+              <option value="other">other</option>
             </select>
           </div>
 
@@ -167,6 +185,39 @@ const Expense = () => {
       <div>
         <h5>Expenses</h5>
 
+        {/* filter by category and mont */}
+        <div className="row mb-3">
+          <div className="col-md-3">
+            <select
+              className="form-control"
+              value={filterMonth}
+              onChange={(e) => setFilterMonth(e.target.value)}
+            >
+              <option value="">All Months</option>
+              {months.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col-md-3">
+            <select
+              className="form-control"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="food">food</option>
+              <option value="transport">transport</option>
+              <option value="bills">bills</option>
+              <option value="shopping">shopping</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+        </div>
+
         <table className="table table-hover">
           <thead>
             <tr>
@@ -178,8 +229,8 @@ const Expense = () => {
             </tr>
           </thead>
           <tbody>
-            {expenses.map((e) => (
-              <tr>
+            {filteredExpenses.map((e) => (
+              <tr key={e._id}>
                 <td>{e.date}</td>
                 <td>{e.amount}</td>
                 <td>{e.category}</td>
